@@ -1,0 +1,44 @@
+services:
+    app:
+        container_name: symfony-app
+        build:
+            context: ./docker/dev/
+            dockerfile: ./Dockerfile
+        restart: always
+        ports:
+            - 8000:8000
+        volumes:
+            - ./app/:/var/www/
+        networks:
+            - symfony
+
+    database:
+        container_name: symfony-database
+        image: mysql:latest
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: symfony
+        ports:
+            - 3306
+        volumes:
+            - db-data:/var/lib/mysql
+        networks:
+            - symfony
+
+    phpmyadmin:
+        container_name: symfony-phpmyadmin
+        image: phpmyadmin:latest
+        restart: always
+        ports:
+            - 8001:80
+        environment:
+            - PMA_HOST=database
+        networks:
+            - symfony
+
+volumes:
+    db-data:
+
+networks:
+    symfony:

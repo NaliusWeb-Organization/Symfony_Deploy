@@ -1,0 +1,12 @@
+services:
+  app:
+    container_name: symfony-app
+    build:
+      context: ./
+      dockerfile: ./docker/preprod/Dockerfile
+    restart: always
+    ports:
+      - 8002:80
+    # env_file:
+    #   - stack.env
+    pull_policy: build
